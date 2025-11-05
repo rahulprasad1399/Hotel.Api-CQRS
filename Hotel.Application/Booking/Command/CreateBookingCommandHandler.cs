@@ -4,10 +4,10 @@ using MediatR;
 
 namespace Hotel.Application.CreateBooking
 {
-    public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Booking>
+    public class CreateBookingCommandCommandHandler : IRequestHandler<CreateBookingCommand, Booking>
     {
         private readonly HotelContext _hotelContext;
-        public CreateBookingCommandHandler(HotelContext hotelContext)
+        public CreateBookingCommandCommandHandler(HotelContext hotelContext)
         {
             _hotelContext = hotelContext;
         }

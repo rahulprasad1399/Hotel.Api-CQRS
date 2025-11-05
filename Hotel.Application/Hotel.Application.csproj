@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Booking\Query\" />
+    <Folder Include="Review\Command\" />
+    <Folder Include="Review\Query\" />
   </ItemGroup>
 
 </Project>
