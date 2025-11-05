@@ -1,6 +1,12 @@
-﻿using Hotel.Application.Hotels;
+﻿
+using Hotel.Application.CreateHotels;
+using Hotel.Application.DeleteHotels;
+using Hotel.Application.GetAllHotels;
+using Hotel.Application.GetByIdHotels;
+using Hotel.Application.UpdateHotels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace Hotel.Api.Controllers
 {
@@ -9,14 +15,78 @@ namespace Hotel.Api.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public HotelController(IMediator mediator) { 
+        public HotelController(IMediator mediator)
+        {
             this._mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<int> CreateHotel(CreateHotelCommand command)
+        public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {
-            return await _mediator.Send(command);
+            int response = await _mediator.Send(command);
+            if (response == 1)
+            {
+                return Ok("Hotel added Successfully");
+            }
+            else
+            {
+                return BadRequest("Failed to add Hotel");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllHotels()
+        {
+            GetHotelQuery query = new GetHotelQuery();
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetHotelById(int id)
+        {
+            GetByIdHotelQuery query = new GetByIdHotelQuery();
+            query.Id = id;
+            var response = await _mediator.Send(query);
+            if (response == null)
+            {
+                return BadRequest($"Customer not found with id {id}");
+            }
+            else
+            {
+                return Ok(response);
+            }
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateHotel(int id, UpdateHotelCommand command)
+        {
+            command.Id = id;
+
+            var response = await _mediator.Send(command);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHotel(int id)
+        {
+            DeleteHotelCommand command = new DeleteHotelCommand();
+            command.id = id;
+            var response = await _mediator.Send(command);
+            if(response == 2)
+            {
+                return BadRequest($"Room Type with id {id} dosen't exist");
+            } else if(response == 1)
+            {
+                return Ok("Hotel removed successfully");
+            }
+            else
+            {
+                return BadRequest("Failed to save to database");
+            }
         }
     }
 }

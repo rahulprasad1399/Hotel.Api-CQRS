@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Hotel.Infrastructure\Hotel.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Booking\Query\" />
+  </ItemGroup>
+
 </Project>
