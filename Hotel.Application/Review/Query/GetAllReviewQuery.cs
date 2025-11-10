@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.GetAllReviews
 {
-    public class GetAllEmployeeQuery : IRequest<List<Review>>
+    public class GetAllReviewQuery : IRequest<List<Review>>
     {
 
     }
