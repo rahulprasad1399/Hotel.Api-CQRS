@@ -21,7 +21,7 @@ namespace Hotel.Api.Controllers
             this._mediator = mediator;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {
@@ -70,6 +70,7 @@ namespace Hotel.Api.Controllers
 
         }
 
+        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHotel(int id, UpdateHotelCommand command)
         {
@@ -85,6 +86,7 @@ namespace Hotel.Api.Controllers
             return Ok(response);
         }
 
+        //[Authorize] 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHotel(int id)
         {
