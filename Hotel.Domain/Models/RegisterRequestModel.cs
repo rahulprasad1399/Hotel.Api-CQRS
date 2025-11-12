@@ -1,25 +1,21 @@
-﻿using Hotel.Domain.Models;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hotel.Application.UpdateEmployee
+namespace Hotel.Domain.Models
 {
-    public class UpdateEmployeeCommand : IRequest<Employee>
+    public class RegisterRequestModel
     {
-        public int Id { get; set; }
         public string FullName { get; set; }
         [Required]
         public string Role { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]  
-        public int HotelId { get; set; }
+        [MinLength(8)]
+        public string? Password { get; set; }
     }
-
 }

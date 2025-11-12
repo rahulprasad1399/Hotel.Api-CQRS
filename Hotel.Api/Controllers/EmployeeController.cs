@@ -4,6 +4,7 @@ using Hotel.Application.CreateEmployee;
 using Hotel.Application.DeleteEmployee;
 using Hotel.Application.GetAllEmployee;
 using Hotel.Application.GetAllEmployeeById;
+using Hotel.Application.LoginRequest;
 using Hotel.Application.UpdateEmployee;
 using Hotel.Domain.Models;
 using MediatR;
@@ -84,6 +85,19 @@ namespace Hotel.Api.Controllers
             else
             {
                 return NotFound(new { message = "Failed to delete employee" });
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> AdminLogin(LoginRequestCommand command)
+        {
+            var adminResponse = await _mediator.Send(command);
+            if (adminResponse != null)
+            {
+                return Ok(adminResponse);
+            } else
+            {
+                return BadRequest("Something went wrong");
             }
         }
 

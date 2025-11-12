@@ -5,6 +5,7 @@ using Hotel.Application.GetAllHotels;
 using Hotel.Application.GetByIdHotels;
 using Hotel.Application.UpdateHotels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
@@ -20,9 +21,15 @@ namespace Hotel.Api.Controllers
             this._mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             int response = await _mediator.Send(command);
             if (response == 1)
             {
@@ -35,9 +42,12 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllHotels()
+        public async Task<IActionResult> GetAllHotels([FromQuery]string? destination, [FromQuery] DateTime? checkin, [FromQuery] DateTime? checkout)
         {
             GetHotelQuery query = new GetHotelQuery();
+            query.destination = destination;
+            query.checkin = checkin;
+            query.checkout = checkout;
             var result = await _mediator.Send(query);
 
             return Ok(result);
@@ -63,6 +73,11 @@ namespace Hotel.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHotel(int id, UpdateHotelCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             command.Id = id;
 
             var response = await _mediator.Send(command);
