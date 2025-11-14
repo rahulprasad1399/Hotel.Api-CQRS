@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Hotel.Application.CreateEmployee
 {
-    public class CreateEmployeeCommand : IRequest<Employee>
+    public class CreateEmployeeCommand : IRequest<ApiResponse<Employee>>
     {
         public string FullName { get; set; }
         [Required]

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.UpdateEmployee
 {
-    public class UpdateEmployeeCommand : IRequest<Employee>
+    public class UpdateEmployeeCommand : IRequest<ApiResponse<Employee>>
     {
         public int Id { get; set; }
         public string FullName { get; set; }

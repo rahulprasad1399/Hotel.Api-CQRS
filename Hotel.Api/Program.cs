@@ -17,9 +17,10 @@ builder.Services.AddCors(option =>
 {
     option.AddPolicy("AllowCrossOrigin", policy =>
     {
-        policy.AllowAnyOrigin();
+        policy.WithOrigins("http://localhost:4200");
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
+        policy.AllowCredentials();
     });
 });
 
@@ -58,6 +59,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<HotelContext>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.Load("Hotel.Application")));
 

@@ -21,7 +21,7 @@ namespace Hotel.Api.Controllers
             this._mediator = mediator;
         }
 
-        //[Authorize]
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {

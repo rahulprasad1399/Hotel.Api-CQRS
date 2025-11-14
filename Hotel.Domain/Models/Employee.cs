@@ -16,10 +16,12 @@ namespace Hotel.Domain.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [MinLength(8)]
+        [MinLength(8)] 
         public string? Password { get; set; }
         public int? HotelId { get; set; }
         public Hotel Hotel { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
     }
 }

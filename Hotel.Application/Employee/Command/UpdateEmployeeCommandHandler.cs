@@ -5,16 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Application.UpdateEmployee
 {
-    public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Employee>
+    public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, ApiResponse<Employee>>
     {
         private readonly HotelContext _hotelContext;
         public UpdateEmployeeCommandHandler(HotelContext hotelContext)
         {
             _hotelContext = hotelContext;
         }
-        public async Task<Employee> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<Employee>> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
             Employee existingEmployee = await _hotelContext.employees.FirstOrDefaultAsync((employee) => employee.Id == request.Id);
+
+            var hotel = await _hotelContext.hotels.FirstOrDefaultAsync((hotel) => hotel.Id == request.HotelId);
+            if (hotel == null)
+            {
+                return ApiResponse<Employee>.Fail("Provide a valid Hotel Id");
+            }
+
             if (existingEmployee != null)
             {
                 existingEmployee.FullName = request.FullName;
@@ -23,9 +30,13 @@ namespace Hotel.Application.UpdateEmployee
                 existingEmployee.HotelId = request.HotelId;
 
                 await _hotelContext.SaveChangesAsync();
-                return existingEmployee;
+                return ApiResponse<Employee>.Ok(existingEmployee);
             }
-            return null;
+            else
+            {
+                return ApiResponse<Employee>.Fail("Provide a valid employee Id");
+            }
+
         }
     }
 

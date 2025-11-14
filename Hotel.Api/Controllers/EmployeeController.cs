@@ -5,6 +5,7 @@ using Hotel.Application.DeleteEmployee;
 using Hotel.Application.GetAllEmployee;
 using Hotel.Application.GetAllEmployeeById;
 using Hotel.Application.LoginRequest;
+using Hotel.Application.RefreshToken;
 using Hotel.Application.UpdateEmployee;
 using Hotel.Domain.Models;
 using MediatR;
@@ -23,14 +24,18 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBooking(CreateEmployeeCommand command)
+        public async Task<IActionResult> CreateEmployee(CreateEmployeeCommand command)
         {
-            Employee employee = await _mediator.Send(command);
-            if (employee != null)
+            ApiResponse<Employee> employee = await _mediator.Send(command);
+            if (employee.Success == true)
             {
                 return Ok(employee);
             }
-            return BadRequest(new { message = "Failed to create Employee" });
+            else
+            {
+                return BadRequest(employee);
+            }
+
         }
 
         [HttpGet]
@@ -61,14 +66,14 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> UpdateBooking(int id, UpdateEmployeeCommand command)
         {
             command.Id = id;
-            Employee updatedEmployee = await _mediator.Send(command);
-            if (updatedEmployee != null)
+            ApiResponse<Employee> updatedEmployee = await _mediator.Send(command);
+            if (updatedEmployee.Success == true)
             {
                 return Ok(updatedEmployee);
             }
             else
             {
-                return NotFound(new { message = $"Employee not found with the id {id}" });
+                return NotFound(updatedEmployee);
             }
         }
 
@@ -92,13 +97,29 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> AdminLogin(LoginRequestCommand command)
         {
             var adminResponse = await _mediator.Send(command);
-            if (adminResponse != null)
+            if (adminResponse.Success == true)
             {
                 return Ok(adminResponse);
-            } else
-            {
-                return BadRequest("Something went wrong");
             }
+            else
+            {
+                return BadRequest(adminResponse);
+            }
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
+        {
+            var reponse = await _mediator.Send(command);
+            if (reponse.Success == true)
+            {
+                return Ok(reponse);
+            }
+            else
+            {
+                return BadRequest(reponse);
+            }
+
         }
 
     }
