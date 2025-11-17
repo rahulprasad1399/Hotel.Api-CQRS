@@ -21,7 +21,7 @@ namespace Hotel.Api.Controllers
             this._mediator = mediator;
         }
 
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {
@@ -33,7 +33,7 @@ namespace Hotel.Api.Controllers
             int response = await _mediator.Send(command);
             if (response == 1)
             {
-                return Ok("Hotel added Successfully");
+                return Ok(new { message = "Hotel added Successfully" });
             }
             else
             {
@@ -98,7 +98,7 @@ namespace Hotel.Api.Controllers
                 return BadRequest($"Room Type with id {id} dosen't exist");
             } else if(response == 1)
             {
-                return Ok("Hotel removed successfully");
+                return Ok(new { message = "Hotel Deleted Successfully" }); 
             }
             else
             {

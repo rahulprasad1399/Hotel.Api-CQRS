@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.BookingGetAll;
+using Hotel.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.GetAllBookings
 {
-    public class GetAllBookingtQuery : IRequest<List<Booking>>
+    public class GetAllBookingtQuery : IRequest<List<BookingGetAllDto>>
     {
 
     }
-
-
 }
+
+

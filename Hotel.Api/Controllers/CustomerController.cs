@@ -1,4 +1,5 @@
 ﻿using Hotel.Application.CreateCustomer;
+using Hotel.Application.CustomerGetAll;
 using Hotel.Application.DeleteCustomer;
 using Hotel.Application.GetAllCustomer;
 using Hotel.Application.GetCustomer;
@@ -25,7 +26,7 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> GetAllCustomer()
         {
             GetAllCustomerQuery query = new GetAllCustomerQuery();
-            List<Customer> customers = await _mediator.Send(query);
+            List<CustomerGetAllDto> customers = await _mediator.Send(query);
             return Ok(customers);
         }
 
@@ -35,7 +36,7 @@ namespace Hotel.Api.Controllers
             GetCustomerByIdQuery command = new GetCustomerByIdQuery();
             command.Id = id;
 
-            Customer customer = await _mediator.Send(command);
+            CustomerGetAllDto customer = await _mediator.Send(command);
             if (customer != null)
             {
                 return Ok(customer);

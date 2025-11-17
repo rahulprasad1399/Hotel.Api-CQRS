@@ -1,4 +1,5 @@
-﻿using Hotel.Application.BookingGetById;
+﻿using Hotel.Application.BookingGetAll;
+using Hotel.Application.BookingGetById;
 using Hotel.Application.CreateBooking;
 using Hotel.Application.DeleteBooking;
 using Hotel.Application.GetAllBookings;
@@ -35,7 +36,7 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> GetAllBookings()
         {
             GetAllBookingtQuery query = new GetAllBookingtQuery();
-            List<Booking> bookings = await _mediator.Send(query);
+            List<BookingGetAllDto> bookings = await _mediator.Send(query);
             return Ok(bookings);
         }
 

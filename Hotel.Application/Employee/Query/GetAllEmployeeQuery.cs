@@ -1,4 +1,6 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.EmployeeGetAll;
+using Hotel.Application.GetAllEmployee;
+using Hotel.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.GetAllEmployee
 {
-    public class GetAllEmployeeQuery : IRequest<List<Employee>>
+    public class GetAllEmployeeQuery : IRequest<List<EmployeeGetAllDto>>
     {
     }
 }

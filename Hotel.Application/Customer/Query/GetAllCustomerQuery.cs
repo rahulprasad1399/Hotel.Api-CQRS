@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.CustomerGetAll;
+using Hotel.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.GetAllCustomer
 {
-    public class GetAllCustomerQuery : IRequest<List<Customer>>
+    public class GetAllCustomerQuery : IRequest<List<CustomerGetAllDto>>
     {
     }
 }

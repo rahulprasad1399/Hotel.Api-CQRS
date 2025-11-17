@@ -2,6 +2,7 @@
 
 using Hotel.Application.CreateEmployee;
 using Hotel.Application.DeleteEmployee;
+using Hotel.Application.EmployeeGetAll;
 using Hotel.Application.GetAllEmployee;
 using Hotel.Application.GetAllEmployeeById;
 using Hotel.Application.LoginRequest;
@@ -42,7 +43,7 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> GetAllBookings()
         {
             GetAllEmployeeQuery query = new GetAllEmployeeQuery();
-            List<Employee> employees = await _mediator.Send(query);
+            List<EmployeeGetAllDto> employees = await _mediator.Send(query);
             return Ok(employees);
         }
 
@@ -51,7 +52,7 @@ namespace Hotel.Api.Controllers
         {
             GetEmployeeByIdQuery query = new GetEmployeeByIdQuery();
             query.Id = id;
-            Employee employee = await _mediator.Send(query);
+            EmployeeGetAllDto employee = await _mediator.Send(query);
             if (employee != null)
             {
                 return Ok(employee);

@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.RoomGetAll;
+using Hotel.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Application.GetByIdRoom
 {
-    public class RoomGetByIdQuery : IRequest<Room>
+    public class RoomGetByIdQuery : IRequest<GetAllRoomDto>
     {
         public int Id { get; set; }
     }

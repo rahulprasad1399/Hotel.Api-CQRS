@@ -2,6 +2,7 @@
 using Hotel.Application.DeleteRoom;
 using Hotel.Application.GetAllRooms;
 using Hotel.Application.GetByIdRoom;
+using Hotel.Application.RoomGetAll;
 using Hotel.Application.UpdateRoom;
 using Hotel.Domain.Models;
 using MediatR;
@@ -24,7 +25,7 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> GetAllRooms()
         {
             GetAllRoomsQuery query = new GetAllRoomsQuery();
-            List<Room> rooms = await _mediator.Send(query);
+            List<GetAllRoomDto> rooms = await _mediator.Send(query);
             return Ok(rooms);
         }
 
@@ -38,7 +39,7 @@ namespace Hotel.Api.Controllers
             }
             else
             {
-                return BadRequest(new { message = "Failed to create a customer" });
+                return BadRequest(new { message = "Failed to create a Room" });
             }
         }
 
@@ -48,7 +49,7 @@ namespace Hotel.Api.Controllers
             RoomGetByIdQuery roomGetByIdQuery = new RoomGetByIdQuery();
             roomGetByIdQuery.Id = id;
 
-            Room roomFound = await _mediator.Send(roomGetByIdQuery);
+            GetAllRoomDto roomFound = await _mediator.Send(roomGetByIdQuery);
             if (roomFound != null)
             {
                 return Ok(roomFound);   
@@ -73,7 +74,7 @@ namespace Hotel.Api.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
             DeleteRoomCommand query = new DeleteRoomCommand();

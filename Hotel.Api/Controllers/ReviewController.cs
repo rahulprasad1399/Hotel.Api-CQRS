@@ -3,6 +3,7 @@ using Hotel.Application.CreateReview;
 using Hotel.Application.DeleteReview;
 using Hotel.Application.GetAllReviews;
 using Hotel.Application.GetReviewById;
+using Hotel.Application.ReviewGetAll;
 using Hotel.Application.UpdateReview;
 using Hotel.Domain.Models;
 using MediatR;
@@ -24,7 +25,7 @@ namespace Hotel.Api.Controllers
         public async Task<IActionResult> GetAllReviews()
         {
             GetAllReviewQuery query = new GetAllReviewQuery();
-            List<Review> reviews = await _mediator.Send(query);
+            List<ReviewGetAllDto> reviews = await _mediator.Send(query);
             return Ok(reviews);
         }
 
@@ -33,7 +34,7 @@ namespace Hotel.Api.Controllers
         {
             GetReviewByIdQuery query = new GetReviewByIdQuery();
             query.Id = id;
-            Review review = await _mediator.Send(query);
+            ReviewGetAllDto review = await _mediator.Send(query);
             if (review != null)
             {
                 return Ok(review);

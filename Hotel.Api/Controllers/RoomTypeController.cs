@@ -26,7 +26,7 @@ namespace Hotel.Api.Controllers
             int response = await _mediator.Send(command);
             if (response == 1)
             {
-                return Ok("Successfully Created a new Room Type");
+                return Ok(new { message = "Room Type Created Successfully" });
             }
             else
             {
@@ -80,7 +80,7 @@ namespace Hotel.Api.Controllers
             var response = await _mediator.Send(command);
             if (response == 1)
             {
-                return Ok("RoomType Deleted Successfully");
+                return Ok(new { message = "Room Type Deleted Successfully" });
             }
             return BadRequest();
         }

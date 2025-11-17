@@ -1,21 +1,33 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.RoomGetAll;
+using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Application.GetAllRooms
 {
-    public class GetAllRoomsQueryHandler : IRequestHandler<GetAllRoomsQuery, List<Room>>
+    public class GetAllRoomsQueryHandler : IRequestHandler<GetAllRoomsQuery, List<GetAllRoomDto>>
     {
         private readonly HotelContext _hotelContext;
         public GetAllRoomsQueryHandler(HotelContext hotelContext)
         {
             _hotelContext = hotelContext;
         }
-        public async Task<List<Room>> Handle(GetAllRoomsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetAllRoomDto>> Handle(GetAllRoomsQuery request, CancellationToken cancellationToken)
         {
-            List<Room> rooms = await _hotelContext.rooms.ToListAsync();
-            return rooms;
+            List<Room> rooms = await _hotelContext.rooms.Include("Hotel").Include("RoomType").ToListAsync();
+            List<GetAllRoomDto> getAllRooms = rooms.Select((room) => new GetAllRoomDto
+            {
+                RoomNumber = room.RoomNumber,
+                Id = room.Id,
+                RoomStatus = room.Status,
+                PricePerNight = room.PricePerNight,
+                hotelId = room.HotelId,
+                RoomTypeId = room.RoomTypeId,
+                HoteName = room.Hotel.Name,
+                RoomTypeName = room.RoomType.TypeName
+            }).ToList();
+            return getAllRooms;
         }
     }
 }
