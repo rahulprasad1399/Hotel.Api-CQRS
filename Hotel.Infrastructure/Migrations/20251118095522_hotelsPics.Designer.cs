@@ -4,6 +4,7 @@ using Hotel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel.Infrastructure.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    partial class HotelContextModelSnapshot : ModelSnapshot
+    [Migration("20251118095522_hotelsPics")]
+    partial class hotelsPics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,10 +240,6 @@ namespace Hotel.Infrastructure.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("PricePerNight")
                         .HasColumnType("decimal(18,2)");
 
@@ -335,7 +334,7 @@ namespace Hotel.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Hotel.Domain.Models.Hotel", "Hotel")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -378,8 +377,6 @@ namespace Hotel.Infrastructure.Migrations
             modelBuilder.Entity("Hotel.Domain.Models.Hotel", b =>
                 {
                     b.Navigation("Employees");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("Rooms");
                 });

@@ -6,6 +6,7 @@ using Hotel.Application.RoomGetAll;
 using Hotel.Application.UpdateRoom;
 using Hotel.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,15 +21,17 @@ namespace Hotel.Api.Controllers
         {
             _mediator = mediator;
         }
-                  
+
         [HttpGet]
-        public async Task<IActionResult> GetAllRooms()
+        public async Task<IActionResult> GetAllRooms([FromQuery] int? hotelId)
         {
             GetAllRoomsQuery query = new GetAllRoomsQuery();
+            query.hotelId = hotelId;
             List<GetAllRoomDto> rooms = await _mediator.Send(query);
             return Ok(rooms);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateRoom(CreateRoomCommand command)
         {
@@ -59,6 +62,7 @@ namespace Hotel.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoom(int id, UpdateRoomCommand command)
         {
@@ -74,6 +78,7 @@ namespace Hotel.Api.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {

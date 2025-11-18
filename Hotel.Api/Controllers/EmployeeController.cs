@@ -10,6 +10,7 @@ using Hotel.Application.RefreshToken;
 using Hotel.Application.UpdateEmployee;
 using Hotel.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel.Api.Controllers
@@ -24,10 +25,11 @@ namespace Hotel.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateEmployee(CreateEmployeeCommand command)
         {
-            ApiResponse<Employee> employee = await _mediator.Send(command);
+            ApiResponse<EmployeeGetAllDto> employee = await _mediator.Send(command);
             if (employee.Success == true)
             {
                 return Ok(employee);
@@ -40,7 +42,7 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBookings()
+        public async Task<IActionResult> GetAllEmployee()
         {
             GetAllEmployeeQuery query = new GetAllEmployeeQuery();
             List<EmployeeGetAllDto> employees = await _mediator.Send(query);
@@ -48,7 +50,7 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBooking(int id)
+        public async Task<IActionResult> GetEmployee(int id)
         {
             GetEmployeeByIdQuery query = new GetEmployeeByIdQuery();
             query.Id = id;
@@ -63,11 +65,12 @@ namespace Hotel.Api.Controllers
             }
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBooking(int id, UpdateEmployeeCommand command)
+        public async Task<IActionResult> UpdateEmployee(int id, UpdateEmployeeCommand command)
         {
             command.Id = id;
-            ApiResponse<Employee> updatedEmployee = await _mediator.Send(command);
+            ApiResponse<EmployeeGetAllDto> updatedEmployee = await _mediator.Send(command);
             if (updatedEmployee.Success == true)
             {
                 return Ok(updatedEmployee);
@@ -78,8 +81,9 @@ namespace Hotel.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking(int id)
+        public async Task<IActionResult> DeleteEmployee(int id)
         {
             DeleteEmployeeCommand query = new DeleteEmployeeCommand();
             query.Id = id;
@@ -121,6 +125,13 @@ namespace Hotel.Api.Controllers
                 return BadRequest(reponse);
             }
 
+        }
+
+        [Authorize]
+        [HttpGet("validate")]
+        public IActionResult Validate()
+        {
+            return Ok(new {authenticated = true});
         }
 
     }

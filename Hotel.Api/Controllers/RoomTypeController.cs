@@ -6,6 +6,7 @@ using Hotel.Application.GetAllRoomType;
 using Hotel.Application.GetByIdRoomType;
 using Hotel.Application.UpdateRoomType;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 
@@ -20,6 +21,7 @@ namespace Hotel.Api.Controllers
         {
             this._mediator = mediator;
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateRoomType(CreateRoomTypeCommand command)
         {
@@ -59,6 +61,7 @@ namespace Hotel.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoomType(int id, UpdateRoomTypeCommand command)
         {
@@ -71,6 +74,7 @@ namespace Hotel.Api.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoomType(int id)
         {

@@ -13,6 +13,7 @@ namespace Hotel.Application.CreateHotels
     {
         [Required]
         public string Name { get; set; }
+        public string Image {  get; set; }
         [Required]
         public string Address { get; set; }
         [Required]

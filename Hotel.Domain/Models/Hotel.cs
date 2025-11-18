@@ -18,10 +18,12 @@ namespace Hotel.Domain.Models
         public string City { get; set; }
         [Required]
         public string Country { get; set; }
+        public string Image {  get; set; }
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
         public List<Room> Rooms { get; set; }
         public List<Employee> Employees { get; set; }
+        public List<Review> Reviews { get; set; }
     }
 }

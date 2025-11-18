@@ -28,7 +28,8 @@ namespace Hotel.Application.GetByIdRoom
                     hotelId = existingRoom.HotelId,
                     RoomTypeId = existingRoom.RoomTypeId,
                     HoteName = existingRoom.Hotel.Name,
-                    RoomTypeName = existingRoom.RoomType.TypeName
+                    RoomTypeName = existingRoom.RoomType.TypeName,
+                    Image = existingRoom.Image,
                 };
                 return room;
             } else

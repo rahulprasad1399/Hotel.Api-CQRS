@@ -17,6 +17,7 @@ namespace Hotel.Domain.Models
         public int RoomTypeId { get; set; }
         public RoomType RoomType { get; set; }
         public List<Booking> Bookings { get; set; }
+        public string Image {  get; set; }
     }
 
     public enum RoomStatus

@@ -21,7 +21,6 @@ namespace Hotel.Api.Controllers
             this._mediator = mediator;
         }
 
-        //[Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateHotel(CreateHotelCommand command)
         {
@@ -42,12 +41,13 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllHotels([FromQuery]string? destination, [FromQuery] DateTime? checkin, [FromQuery] DateTime? checkout)
+        public async Task<IActionResult> GetAllHotels([FromQuery]string? destination, [FromQuery] DateTime? checkin, [FromQuery] DateTime? checkout, [FromQuery] int? price)
         {
             GetHotelQuery query = new GetHotelQuery();
             query.destination = destination;
             query.checkin = checkin;
             query.checkout = checkout;
+            query.price = price;
             var result = await _mediator.Send(query);
 
             return Ok(result);
@@ -70,7 +70,6 @@ namespace Hotel.Api.Controllers
 
         }
 
-        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHotel(int id, UpdateHotelCommand command)
         {
@@ -86,7 +85,6 @@ namespace Hotel.Api.Controllers
             return Ok(response);
         }
 
-        //[Authorize] 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHotel(int id)
         {

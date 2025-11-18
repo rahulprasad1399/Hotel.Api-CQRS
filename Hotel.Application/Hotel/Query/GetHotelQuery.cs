@@ -14,5 +14,6 @@ namespace Hotel.Application.GetAllHotels
         public string? destination { get; set; }
         public DateTime? checkin { get; set; }
         public DateTime? checkout { get; set; }
+        public int? price { get; set; }
     }
 }

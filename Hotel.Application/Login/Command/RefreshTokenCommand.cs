@@ -2,6 +2,8 @@
 using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,22 +15,31 @@ namespace Hotel.Application.RefreshToken
 {
     public class RefreshTokenCommand : IRequest<ApiResponse<RefreshTokenResponseDto>>
     {
-        public int UserId { get; set; }
-        public string RefreshToken { get; set; }
     }
 
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, ApiResponse<RefreshTokenResponseDto>>
     {
         private readonly HotelContext _context;
         private readonly IConfiguration _configuration;
-        public RefreshTokenCommandHandler(HotelContext context, IConfiguration configuration)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public RefreshTokenCommandHandler(HotelContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<ApiResponse<RefreshTokenResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var employee = await ValidateRefrehToken(request.UserId, request.RefreshToken);
+
+            var httpContext = _httpContextAccessor.HttpContext;
+            var refreshToken = httpContext.Request.Cookies["refreshToken"];
+
+            if(string.IsNullOrEmpty(refreshToken))
+            {
+                return ApiResponse<RefreshTokenResponseDto>.Fail("Refresh token missing");
+            }
+
+            var employee = await ValidateRefrehToken(refreshToken);
             if (employee == null)
             {
                 return ApiResponse<RefreshTokenResponseDto>.Fail("Invalid or Expired Refresh Token");
@@ -57,6 +68,22 @@ namespace Hotel.Application.RefreshToken
 
             var newRefreshToken = await GenerateAndSaveRefreshToken(employee);
 
+            httpContext.Response.Cookies.Append("token", newAccessToken, new CookieOptions
+            {
+                   HttpOnly = true,
+                   Secure = true,
+                   SameSite = SameSiteMode.None,
+                   Expires = DateTime.UtcNow.AddMinutes(30)
+            });
+
+            httpContext.Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            {
+                HttpOnly= true,
+                Secure = true,  
+                SameSite = SameSiteMode.None,
+                Expires= DateTime.UtcNow.AddDays(7)
+            });
+
             var response = new RefreshTokenResponseDto
             {
                 AccessToken = newAccessToken,
@@ -83,14 +110,12 @@ namespace Hotel.Application.RefreshToken
             return refreshToken;
         }
 
-        private async Task<Employee> ValidateRefrehToken(int id, string refreshToken)
+        private async Task<Employee> ValidateRefrehToken(string refreshToken)
         {
-            var employee = await _context.employees.FindAsync(id);
-            if (employee == null || (employee.RefreshToken != refreshToken) || (employee.RefreshTokenExpiryTime <= DateTime.UtcNow))
-            {
-                return null;
-            }
-            return employee;
+            return await _context.employees.FirstOrDefaultAsync(e =>
+                e.RefreshToken == refreshToken &&
+                e.RefreshTokenExpiryTime > DateTime.UtcNow
+            );
         }
     }
 }

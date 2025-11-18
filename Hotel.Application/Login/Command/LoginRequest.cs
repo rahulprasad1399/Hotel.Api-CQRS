@@ -82,7 +82,7 @@ namespace Hotel.Application.LoginRequest
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.Strict,
+                    SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddMinutes(30),
                     Path = "/"
                 });
@@ -91,7 +91,7 @@ namespace Hotel.Application.LoginRequest
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.Strict,
+                    SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddDays(7)
                 });
             }

@@ -11,6 +11,6 @@ namespace Hotel.Application.GetAllRooms
 {
     public class GetAllRoomsQuery : IRequest<List<GetAllRoomDto>>
     {
-
+        public int? hotelId { get; set; }
     }
 }

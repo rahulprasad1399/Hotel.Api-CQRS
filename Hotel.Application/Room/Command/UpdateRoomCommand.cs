@@ -17,5 +17,6 @@ namespace Hotel.Application.UpdateRoom
         public RoomStatus Status { get; set; }
         public int HotelId { get; set; }
         public int RoomTypeId { get; set; }
+        public string Image {  get; set; }
     }
 }

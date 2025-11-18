@@ -15,5 +15,6 @@ namespace Hotel.Application.CreateRoom
         public RoomStatus Status { get; set; }
         public int HotelId { get; set; }
         public int RoomTypeId { get; set; }
+        public string Image {  get; set; }
     }
 }

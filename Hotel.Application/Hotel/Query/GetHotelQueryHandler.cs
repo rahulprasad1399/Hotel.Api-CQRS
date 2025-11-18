@@ -16,7 +16,7 @@ namespace Hotel.Application.GetAllHotels
 
         public async Task<List<HotelGetDto>> Handle(GetHotelQuery request, CancellationToken cancellationToken)
         {
-            var query = _context.hotels.Include(r => r.Rooms).ThenInclude(h => h.Bookings).AsQueryable();
+            var query = _context.hotels.Include(r => r.Rooms).ThenInclude(h => h.Bookings).Include(x => x.Reviews).AsQueryable();
 
             if (!string.IsNullOrEmpty(request.destination))
             {
@@ -32,6 +32,11 @@ namespace Hotel.Application.GetAllHotels
                 query = query.Where((hotel) => hotel.Rooms.Any((room) => room.Bookings.All((booking) => checkin > booking.CheckOutDate || checkout < booking.CheckInDate)));
             }
 
+            if (request.price.HasValue)
+            {
+                query = query.Where(hotel => hotel.Rooms.Any(room => room.PricePerNight <= request.price.Value));
+            }
+
             List<Hotel.Domain.Models.Hotel> hotels = await query.ToListAsync();
 
 
@@ -39,10 +44,13 @@ namespace Hotel.Application.GetAllHotels
             {
                 Id = hotel.Id,
                 Name = hotel.Name,
+                Image = hotel.Image,
                 Address = hotel.Address,
                 City = hotel.City,
                 Country = hotel.Country,
                 PhoneNumber = hotel.PhoneNumber,
+                PricePerNight = hotel.Rooms.Any() ? hotel.Rooms.Min(room => room.PricePerNight) : 0,
+                CustomerRating = hotel.Reviews != null && hotel.Reviews.Any() ? hotel.Reviews.Average((review)=>review.Rating) : 0,
             }).ToList();
 
             return hotellist;

@@ -15,6 +15,7 @@ namespace Hotel.Application.CreateHotels
         {
             Domain.Models.Hotel newHotel = new Domain.Models.Hotel();
             newHotel.Name = command.Name;
+            newHotel.Image = command.Image;
             newHotel.Address = command.Address;
             newHotel.City = command.City;
             newHotel.Country = command.Country;

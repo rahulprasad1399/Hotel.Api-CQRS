@@ -22,6 +22,7 @@ namespace Hotel.Application.UpdateRoom
                 roomToUpdate.Status = request.Status;
                 roomToUpdate.HotelId = request.HotelId;
                 roomToUpdate.RoomTypeId = request.RoomTypeId;
+                roomToUpdate.Image = request.Image;
 
                 var response = await _context.SaveChangesAsync();
                 if(response == 1)

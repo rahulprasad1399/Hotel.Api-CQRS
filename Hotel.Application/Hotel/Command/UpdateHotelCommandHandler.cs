@@ -20,6 +20,7 @@ namespace Hotel.Application.UpdateHotels
 
             existingHotel.Address = command.Address;
             existingHotel.City = command.City;
+            existingHotel.Image = command.Image;
             existingHotel.Country = command.Country;
             existingHotel.PhoneNumber = command.PhoneNumber;
             existingHotel.Name = command.Name;

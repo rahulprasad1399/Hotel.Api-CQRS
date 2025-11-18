@@ -19,7 +19,8 @@ namespace Hotel.Application.CreateRoom
                 PricePerNight = request.PricePerNight,
                 Status = request.Status,
                 HotelId = request.HotelId,
-                RoomTypeId = request.RoomTypeId
+                RoomTypeId = request.RoomTypeId,
+               Image = request.Image,
             };
 
             var newRoom = await _hotelContext.rooms.AddAsync(room);

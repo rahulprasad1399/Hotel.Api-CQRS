@@ -21,5 +21,6 @@ namespace Hotel.Domain.Models
         [Required]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
+
     }
 }

@@ -17,5 +17,6 @@ namespace Hotel.Application.RoomGetAll
         public string HoteName { get; set; }
         public int RoomTypeId { get; set; }
         public string RoomTypeName { get; set; }
+        public string Image {  get; set; }  
     }
 }

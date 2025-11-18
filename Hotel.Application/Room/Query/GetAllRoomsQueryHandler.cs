@@ -15,7 +15,15 @@ namespace Hotel.Application.GetAllRooms
         }
         public async Task<List<GetAllRoomDto>> Handle(GetAllRoomsQuery request, CancellationToken cancellationToken)
         {
-            List<Room> rooms = await _hotelContext.rooms.Include("Hotel").Include("RoomType").ToListAsync();
+            var query = _hotelContext.rooms.Include("Hotel").Include("RoomType").AsQueryable();
+
+            if (request.hotelId.HasValue)
+            {
+                query = query.Where((room) => room.HotelId == request.hotelId.Value);
+            }
+
+            var rooms = await query.ToListAsync();
+
             List<GetAllRoomDto> getAllRooms = rooms.Select((room) => new GetAllRoomDto
             {
                 RoomNumber = room.RoomNumber,
@@ -25,8 +33,10 @@ namespace Hotel.Application.GetAllRooms
                 hotelId = room.HotelId,
                 RoomTypeId = room.RoomTypeId,
                 HoteName = room.Hotel.Name,
-                RoomTypeName = room.RoomType.TypeName
+                RoomTypeName = room.RoomType.TypeName,
+                Image = room.Image
             }).ToList();
+
             return getAllRooms;
         }
     }

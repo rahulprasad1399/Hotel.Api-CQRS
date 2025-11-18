@@ -1,24 +1,25 @@
-﻿using Hotel.Domain.Models;
+﻿using Hotel.Application.EmployeeGetAll;
+using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Application.CreateEmployee
 {
-    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, ApiResponse<Employee>>
+    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, ApiResponse<EmployeeGetAllDto>>
     {
         private readonly HotelContext _hotelContext;
         public CreateEmployeeCommandHandler(HotelContext hotelContext)
         {
             _hotelContext = hotelContext;
         }
-        public async Task<ApiResponse<Employee>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EmployeeGetAllDto>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
 
             var hotel = await _hotelContext.hotels.FirstOrDefaultAsync((hotel) => hotel.Id == request.HotelId);
             if (hotel == null)
             {
-                return ApiResponse<Employee>.Fail("Provide a valid Hotel Id");
+                return ApiResponse<EmployeeGetAllDto>.Fail("Provide a valid Hotel Id");
             }
 
             Employee employee = new Employee();
@@ -31,13 +32,24 @@ namespace Hotel.Application.CreateEmployee
             int aaffectedRows = await _hotelContext.SaveChangesAsync();
             if (aaffectedRows > 0)
             {
-                return ApiResponse<Employee>.Ok(employee);
+                var emp = newEmployee.Entity;
+                EmployeeGetAllDto resEmployee = new EmployeeGetAllDto
+                {
+                    Id = emp.Id,
+                    FullName = emp.FullName,
+                    Email = emp.Email,
+                    Role = emp.Role,
+                    HotelId = emp.HotelId,
+                    HotelName = emp.Hotel.Name
+                };
+                return ApiResponse<EmployeeGetAllDto>.Ok(resEmployee);
             }
             else
             {
-                return ApiResponse<Employee>.Fail("Failed to save the employee to database");
+                return ApiResponse<EmployeeGetAllDto>.Fail("Failed to save the employee to database");
             }
 
         }
     }
 }
+
