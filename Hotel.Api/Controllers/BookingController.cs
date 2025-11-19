@@ -29,7 +29,7 @@ namespace Hotel.Api.Controllers
             {
                return Ok(booking);
             }
-            return BadRequest(new { message = "Failed to create Customer" });
+            return BadRequest(new { message = "Failed to create Booking" });
         }
 
         [HttpGet]

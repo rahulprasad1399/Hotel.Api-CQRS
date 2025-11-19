@@ -18,5 +18,6 @@ namespace Hotel.Application.CreateCustomer
         public string PhoneNumber { get; set; }
         [Required]
         public string IdProofNumber { get; set; }
+        public string Password { get; set; }
     }
 }

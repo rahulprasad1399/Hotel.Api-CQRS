@@ -1,5 +1,4 @@
 ﻿using Hotel.Application.HotelDto;
-using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

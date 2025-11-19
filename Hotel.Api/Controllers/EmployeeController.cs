@@ -127,7 +127,7 @@ namespace Hotel.Api.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("validate")]
         public IActionResult Validate()
         {

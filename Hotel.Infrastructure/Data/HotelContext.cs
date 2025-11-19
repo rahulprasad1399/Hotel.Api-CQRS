@@ -24,6 +24,12 @@ namespace Hotel.Infrastructure.Data
         public DbSet<Room> rooms { get; set; }
         public DbSet<RoomType> roomTypes { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customer>().HasIndex(c => c.Email).IsUnique();
+        }
+
     }
 }
  

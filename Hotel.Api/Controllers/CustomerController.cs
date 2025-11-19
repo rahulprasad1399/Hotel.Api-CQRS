@@ -1,5 +1,6 @@
 ﻿using Hotel.Application.CreateCustomer;
 using Hotel.Application.CustomerGetAll;
+using Hotel.Application.CustomerLogin;
 using Hotel.Application.DeleteCustomer;
 using Hotel.Application.GetAllCustomer;
 using Hotel.Application.GetCustomer;
@@ -50,7 +51,7 @@ namespace Hotel.Api.Controllers
             int response = await _mediator.Send(command);
             if (response == 1)
             {
-                return Ok("Customer Created Successfully");
+                return Ok(new {message = "Customer registered successfully"});
             }
             return BadRequest("Failed to create Customer");
         }
@@ -81,6 +82,20 @@ namespace Hotel.Api.Controllers
                 return Ok(new { message = $"Customer {id} deleted successfully" });
             }
             return BadRequest(new { message = $"Failed to delete Customer" });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginCustomer(CustomerLoginCommand command)
+        {
+            var loginResponse = await _mediator.Send(command);
+            if (loginResponse == null)
+            {
+                return BadRequest(new { message = "Failed to log in" });
+            }
+            else
+            {
+                return Ok(loginResponse);
+            }
         }
 
     }

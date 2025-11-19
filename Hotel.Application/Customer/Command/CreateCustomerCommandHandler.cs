@@ -1,6 +1,7 @@
 ﻿using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Runtime.CompilerServices;
 
 namespace Hotel.Application.CreateCustomer
@@ -19,8 +20,11 @@ namespace Hotel.Application.CreateCustomer
                 FullName = request.FullName,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
-                IdProofNumber = request.IdProofNumber
+                IdProofNumber = request.IdProofNumber,
             };
+
+            var hasher = new PasswordHasher<Customer>();
+            customer.Password = hasher.HashPassword(customer, request.Password);
 
             await _context.customers.AddAsync(customer);
             int res = await _context.SaveChangesAsync();
