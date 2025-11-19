@@ -2,6 +2,7 @@
 using Hotel.Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Hotel.Application.CreateBooking
@@ -30,12 +31,26 @@ namespace Hotel.Application.CreateBooking
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadJwtToken(token);
 
-            var CustomerIdClaim = jwtToken.Claims.FirstOrDefault(c=>c.Type == "CustomerId")?.Value;
+            var CustomerIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "CustomerId")?.Value;
 
             if (!int.TryParse(CustomerIdClaim, out int customerId))
             {
                 return null;
             }
+
+            //var overlappingBooking = await _hotelContext.bookings
+            //    .Where(b => b.RoomId == request.RoomId)
+            //    .Where(b =>
+            //        request.CheckInDate < b.CheckOutDate &&
+            //        request.CheckOutDate > b.CheckInDate
+            //    )
+            //    .FirstOrDefaultAsync();
+
+            //if (overlappingBooking != null)
+            //{
+            //    return null;
+            //}
+
 
             Booking booking = new Booking();
             booking.CheckInDate = request.CheckInDate;

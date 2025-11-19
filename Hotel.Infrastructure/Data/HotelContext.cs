@@ -12,7 +12,9 @@ namespace Hotel.Infrastructure.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=HotelNewApp;User Id=sa;Password=Rahul@123;TrustServerCertificate=True;");
+            
+            optionsBuilder.UseSqlServer("Server = RAHUL\\SQLEXPRESS; Database = HotelNewApp; Trusted_Connection = True; TrustServerCertificate = True;");
+            //optionsBuilder.UseSqlServer("Server=localhost;Database=HotelNewApp;User Id=sa;Password=Rahul@123;TrustServerCertificate=True;");
         }
 
         public DbSet<Customer> customers {  get; set; }
