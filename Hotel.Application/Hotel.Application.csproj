@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Admin-logout\Query\" />
     <Folder Include="Login\Query\" />
   </ItemGroup>
 

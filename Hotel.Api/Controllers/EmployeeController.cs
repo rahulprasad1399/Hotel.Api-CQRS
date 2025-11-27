@@ -1,5 +1,4 @@
-﻿
-
+﻿using Hotel.Application.Admin_logout.Command;
 using Hotel.Application.CreateEmployee;
 using Hotel.Application.DeleteEmployee;
 using Hotel.Application.EmployeeGetAll;
@@ -132,6 +131,18 @@ namespace Hotel.Api.Controllers
         public IActionResult Validate()
         {
             return Ok(new {authenticated = true});
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            AdminLogoutCommand command = new AdminLogoutCommand();
+            var logoutRespones = _mediator.Send(command);
+            if(logoutRespones == null)
+            {
+                return BadRequest();
+            }
+            return Ok(new {message = logoutRespones});
         }
 
     }

@@ -1,5 +1,4 @@
-﻿using Hotel.Application.RefreshToken;
-using Hotel.Domain.Models;
+﻿using Hotel.Domain.Models;
 using Hotel.Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
